@@ -1,0 +1,105 @@
+#+title: Configuration
+#+author: Aye Chan San Tun
+#+PROPERTY: header-args :tangle config.el
+
+1. Ctrl-c Ctrl-c (to refresh page)  
+2. Ctrl-c Ctrl-v t (to tangle and return value to config.el)
+
+* General Shit
+
+This is my name and not my email address:
+#+begin_src emacs-lisp
+(setq user-full-name "Aye Chan San Tun"
+      user-mail-address "john@doe.com")
+#+end_src
+
+* Aesthetics
+** Theme
+Here are all the themes to choose from:
+
+Dracula Tepes vibes all the way from Transylvania
+#+begin_src emacs-lisp
+(setq doom-theme 'doom-dracula)
+#+end_src
+
+A theme with dark, high-contrast colors and a vibrant palette
+#+begin_src emacs-lisp
+;;(setq doom-theme 'doom-molokai)
+#+end_src
+
+A dark and minimalistic theme with subtle colors
+#+begin_src emacs-lisp
+;;(setq doom-theme 'doom-spacegrey)
+#+end_src
+
+A cool-toned theme inspired by the Nord color palette
+#+begin_src emacs-lisp
+;;(setq doom-theme 'doom-nord)
+#+end_src
+
+A dark theme with high contrast and a futuristic look
+#+begin_src emacs-lisp
+;;(setq doom-theme 'doom-tomorrow-night)
+#+end_src
+
+** Line Numbers
+Here are my line numbers:
+#+begin_src emacs-lisp
+(setq display-line-numbers-type t)
+#+end_src
+
+** Formatting
+
+If non-nil, format with LSP formatter if it's available.
+#+begin_src emacs-lisp
+(setq +format-with-lsp t)
+#+end_src
+
+* Organization Mode
+This line sets the default directory for my org files to file path
+in quotes.
+#+begin_src emacs-lisp
+(setq org-directory "~/org/")
+#+end_src
+
+
+* Language Server Protocol
+** Solidity
+
+Solidity lsp support
+#+begin_src emacs-lisp
+(after! lsp-mode
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio")) :major-modes '(solidity-mode) :priority -1 :server-id 'solidity-ls)))
+#+end_src
+
+Solidity lsp config
+#+begin_src emacs-lisp
+(add-hook 'solidity-mode-hook (lambda ()
+                                (progn
+                                  (format-all-mode -1)
+                                  (lsp))))
+#+end_src
+
+** Tailwind CSS
+
+Allows auto-complete on tailwind
+#+begin_src emacs-lisp
+(use-package lsp-tailwindcss
+  :init
+  (setq lsp-tailwindcss-add-on-mode t))
+#+end_src
+
+* Weird Shit
+Not sure what this is but "SPC-m-i" will auto format the page
+thanks to this:
+#+begin_src emacs-lisp
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (web-mode-markup-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-code-indent-offset 2)
+)
+(add-hook 'web-mode-hook  'my-web-mode-hook)
+#+end_src
